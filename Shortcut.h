@@ -1,0 +1,92 @@
+#pragma once
+
+#include <sstream>
+#include <tuple>
+#include <vector>
+#include <string>
+
+template <typename T>
+struct _fromString
+{
+    T value;
+    _fromString(const std::string &string)
+    {
+        std::stringstream ss;
+        ss << string;
+        ss >> value;
+    }
+};
+
+template <>
+struct _fromString<std::string>
+{
+    std::string value;
+    _fromString(std::string string):
+        value(std::move(string))
+    {
+        
+    }
+};
+
+template <typename T>
+T fromString(const std::string &string)
+{
+    return _fromString<T>(string).value;
+}
+
+template <int ...T>
+struct _Numbers
+{
+
+};
+
+template <int N, typename T>
+struct _GenerateNumbers
+{
+    
+};
+
+template <int N, int ...T>
+struct _GenerateNumbers<N, _Numbers<T...>>
+{
+    using type = typename _GenerateNumbers<N - 1, _Numbers<N, T...>>::type;
+};
+
+template <int ...T>
+struct _GenerateNumbers<0, _Numbers<T...>>
+{
+    using type = _Numbers<T...>;
+};
+
+template<class ...T>
+struct _splitString
+{
+
+};
+
+template<int ...B, class ...T>
+struct _splitString<_Numbers<B...>, T...>
+{
+    std::tuple<T...> value;
+    _splitString(std::vector<std::string>::const_iterator &iterator)
+    {
+        value = std::make_tuple(fromString<T>(*(iterator + (B - 1)))...);
+    }
+};
+
+
+template<typename ...T>
+std::tuple<T...> splitString(std::string line, char splitter = ' ')
+{
+    std::vector<std::string> substrings;
+    auto iterator = line.cend();
+    while ((iterator = std::find(line.cbegin(), line.cend(), splitter)) != line.cend()) {
+        substrings.push_back(std::string(line.cbegin(), iterator));
+        line = std::string(iterator + 1, line.cend());
+    }
+    substrings.push_back(line);
+
+    auto resultIterator = substrings.begin();
+
+    return _splitString<_GenerateNumbers<sizeof...(T), _Numbers<>>::type, T...>(resultIterator).value;
+}
