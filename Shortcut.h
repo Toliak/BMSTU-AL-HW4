@@ -9,7 +9,7 @@ template <typename T>
 struct _fromString
 {
     T value;
-    _fromString(const std::string &string)
+    explicit _fromString(const std::string &string)
     {
         std::stringstream ss;
         ss << string;
@@ -21,7 +21,7 @@ template <>
 struct _fromString<std::string>
 {
     std::string value;
-    _fromString(std::string string):
+    explicit _fromString(std::string string):
         value(std::move(string))
     {
         
@@ -68,7 +68,7 @@ template<int ...B, class ...T>
 struct _splitString<_Numbers<B...>, T...>
 {
     std::tuple<T...> value;
-    _splitString(std::vector<std::string>::const_iterator &iterator)
+    explicit _splitString(std::vector<std::string>::const_iterator &iterator)
     {
         value = std::make_tuple(fromString<T>(*(iterator + (B - 1)))...);
     }
@@ -76,17 +76,30 @@ struct _splitString<_Numbers<B...>, T...>
 
 
 template<typename ...T>
-std::tuple<T...> splitString(std::string line, char splitter = ' ')
+std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string * const remain = nullptr)
 {
+    if (remain) {
+        remain->clear();
+    }
     std::vector<std::string> substrings;
-    auto iterator = line.cend();
+    std::string::const_iterator iterator;
+    size_t separatorCounter = 0;
+
     while ((iterator = std::find(line.cbegin(), line.cend(), splitter)) != line.cend()) {
         substrings.emplace_back(line.cbegin(), iterator);
         line = std::string(iterator + 1, line.cend());
+        separatorCounter++;
+        if (separatorCounter >= sizeof...(T)) {
+            break;
+        }
     }
-    substrings.push_back(line);
+    if (separatorCounter < sizeof...(T)) {
+        substrings.emplace_back(line);
+    } else if (remain) {
+        *remain = line;
+    }
 
-    auto resultIterator = substrings.begin();
+    auto resultIterator = substrings.cbegin();
 
-    return _splitString<_GenerateNumbers<sizeof...(T), _Numbers<>>::type, T...>(resultIterator).value;
+    return _splitString<typename _GenerateNumbers<sizeof...(T), _Numbers<>>::type, T...>(resultIterator).value;
 }

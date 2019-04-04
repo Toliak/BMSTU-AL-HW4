@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <utility>
+
 #pragma once
 
 #include <string>
@@ -13,7 +15,7 @@ class Model
 {
 public:
     virtual std::string toString() const = 0;
-    virtual void fromString(const std::string &) = 0;
+    virtual std::string fromString(const std::string &) = 0;
 
     virtual ~Model() = default;
 };
@@ -22,28 +24,26 @@ class Project: virtual public Model
 {
 private:
     std::string name;
-    size_t price;
+    size_t price = 0;
 
 public:
-    Project() = default;
-
     Project(std::string name, decltype(Project::price) price)
     {
         Project::setName(std::move(name));
         Project::setPrice(price);
     }
 
-    void setName(std::string name)
+    void setName(std::string projectName)
     {
-        Project::name = std::move(name);
+        Project::name = std::move(projectName);
     }
 
-    void setPrice(decltype(Project::price) price)
+    void setPrice(decltype(Project::price) projectPrice)
     {
-        if (price > 1000000) {
+        if (projectPrice > 1000000) {
             throw ProjectModelException("Project: Price must be below 1000000");
         }
-        Project::price = price;
+        Project::price = projectPrice;
     }
 
     const std::string &getName() const noexcept
@@ -61,9 +61,19 @@ public:
         return (Project::name + std::string("\n") + std::to_string(Project::price));
     }
 
-    void fromString(const std::string &string) override
+    std::string fromString(const std::string &string) override
     {
-        std::tie(Project::name, Project::price) = splitString<std::string, size_t>(string, '\n');
+        std::string remain;
+
+        std::tie(
+            Project::name,
+            Project::price
+        ) = splitString<
+            decltype(Project::name),
+            decltype(Project::price)
+        >(string, '\n', &remain);
+
+        return remain;
     }
 };
 
@@ -72,8 +82,8 @@ class BaseSubdivision: virtual public Model
 protected:
     std::string name;
     std::string director;
-    size_t graduateAmount;
-    size_t employeeAmount;
+    size_t graduateAmount = 0;
+    size_t employeeAmount = 0;
 
 public:
     BaseSubdivision(const std::string &name,
@@ -87,33 +97,33 @@ public:
         BaseSubdivision::setEmployeeAmount(employeeAmount);
     }
 
-    void setName(const std::string &name)
+    void setName(const std::string &subdivisionName)
     {
-        if (name.size() > 50) {
+        if (subdivisionName.size() > 50) {
             throw BaseSubdivisionModelException("BaseSubdivision: Name size must be below 50");
         }
-        BaseSubdivision::name = name;
+        BaseSubdivision::name = subdivisionName;
     }
-    void setDirector(const std::string &director)
+    void setDirector(const std::string &subdivisionDirector)
     {
         if (director.size() > 50) {
             throw BaseSubdivisionModelException("BaseSubdivision: Director size must be below 50");
         }
-        BaseSubdivision::director = director;
+        BaseSubdivision::director = subdivisionDirector;
     }
-    void setGraduateAmount(decltype(BaseSubdivision::graduateAmount) graduateAmount)
+    void setGraduateAmount(decltype(BaseSubdivision::graduateAmount) subdivisionGraduateAmount)
     {
-        if (graduateAmount > 1000000) {
+        if (subdivisionGraduateAmount > 1000000) {
             throw BaseSubdivisionModelException("BaseSubdivision: Graduate amount must be below 1000000");
         }
-        BaseSubdivision::graduateAmount = graduateAmount;
+        BaseSubdivision::graduateAmount = subdivisionGraduateAmount;
     }
-    void setEmployeeAmount(decltype(BaseSubdivision::employeeAmount) employeeAmount)
+    void setEmployeeAmount(decltype(BaseSubdivision::employeeAmount) subdivisionEmployeeAmount)
     {
-        if (employeeAmount > 1000000) {
+        if (subdivisionEmployeeAmount > 1000000) {
             throw BaseSubdivisionModelException("BaseSubdivision: Graduate amount must be below 1000000");
         }
-        BaseSubdivision::employeeAmount = employeeAmount;
+        BaseSubdivision::employeeAmount = subdivisionEmployeeAmount;
     }
 
     const std::string &getName() const
@@ -146,8 +156,10 @@ public:
         );
     }
 
-    void fromString(const std::string &string) override
+    std::string fromString(const std::string &string) override
     {
+        std::string remain;
+
         std::tie(
             BaseSubdivision::name,
             BaseSubdivision::director,
@@ -158,7 +170,9 @@ public:
             decltype(BaseSubdivision::director),
             decltype(BaseSubdivision::graduateAmount),
             decltype(BaseSubdivision::employeeAmount)
-        >(string, '\n');
+        >(string, '\n', &remain);
+
+        return remain;
     }
 
     virtual decltype(BaseSubdivision::graduateAmount) getStudentsAmount() const noexcept = 0;
@@ -173,58 +187,71 @@ public:
 
     EducationalSubdivision(const std::string &name,
                            const std::string &director,
-                           decltype(BaseSubdivision::graduateAmount) graduateAmount,
-                           decltype(BaseSubdivision::employeeAmount) employeeAmount,
-                           const std::vector<Project> &projects = {})
-        : BaseSubdivision(name, director, graduateAmount, employeeAmount)
-    {
+                           decltype(std::declval<BaseSubdivision>().getGraduateAmount()) graduateAmount,
+                           decltype(std::declval<BaseSubdivision>().getEmployeeAmount()) employeeAmount,
+                           std::vector<Project> projects = {})
+        : BaseSubdivision(name, director, graduateAmount, employeeAmount), projects(std::move(projects))
+    {}
 
-    }
-
-    decltype(BaseSubdivision::graduateAmount) getStudentsAmount() const noexcept override
+    decltype(std::declval<BaseSubdivision>().getGraduateAmount()) getStudentsAmount() const noexcept override
     {
         return BaseSubdivision::graduateAmount;
     }
 
-    std::string toString() const
+    std::vector<Project> &getProjects()
     {
-        std::string projects = std::to_string(EducationalSubdivision::projects.size()) + std::string("\n");
+        return EducationalSubdivision::projects;
+    }
+
+    std::string toString() const override
+    {
+        std::string projectsString = std::to_string(EducationalSubdivision::projects.size()) + std::string("\n");
         auto preEndIterator = EducationalSubdivision::projects.cend();
         preEndIterator--;
         for (auto it = EducationalSubdivision::projects.cbegin(); it != EducationalSubdivision::projects.cend(); it++) {
-            projects += it->toString();
+            projectsString += it->toString();
             if (it != preEndIterator) {
-                projects += "\n";
+                projectsString += "\n";
             }
         }
 
         return (
             BaseSubdivision::toString() + std::string("\n")
-                + projects
+                + projectsString
         );
     }
 
-    void fromString(const std::string &string) override
+    std::string fromString(const std::string &string) override
     {
-        BaseSubdivision::fromString(string);
-        //TODO: а что со строкой-то?
+        std::string remain = BaseSubdivision::fromString(string);
+        EducationalSubdivision::projects.clear();
+
+        size_t projectsAmount;
+        std::tie(projectsAmount) = splitString<size_t>(remain, '\n', &remain);
+        for (size_t i = 0; i < projectsAmount; i++) {
+            Project project("", 0);
+            remain = project.fromString(remain);
+            EducationalSubdivision::projects.emplace_back(project);
+        }
+
+        return remain;
     }
 };
 
 class Course: virtual public Model
 {
 private:
-    size_t studentAmount;
-    size_t price;
+    size_t studentAmount = 0;
+    size_t price = 0;
 
 public:
-    Course(size_t studentAmount, size_t price)
+    Course(decltype(Course::studentAmount) studentAmount, decltype(Course::price) price)
     {
-        setStudentAmount(studentAmount);
-        setPrice(price);
+        Course::setStudentAmount(studentAmount);
+        Course::setPrice(price);
     }
 
-    void setStudentAmount(size_t amount)
+    void setStudentAmount(decltype(Course::studentAmount) amount)
     {
         if (amount > 1000000) {
             throw CourseModelException("Course: Students amount must be below 500");
@@ -232,12 +259,42 @@ public:
         Course::studentAmount = amount;
     }
 
-    void setPrice(size_t price)
+    void setPrice(decltype(Course::price) coursePrice)
     {
-        if (price > 1000000) {
+        if (coursePrice > 1000000) {
             throw CourseModelException("Course: Price must be below 1000000");
         }
-        Course::price = price;
+        Course::price = coursePrice;
+    }
+
+    decltype(Course::studentAmount) getStudentAmount() const
+    {
+        return studentAmount;
+    }
+
+    decltype(Course::price) getPrice() const
+    {
+        return price;
+    }
+
+    std::string toString() const override
+    {
+        return (std::to_string(Course::studentAmount) + std::string("\n") + std::to_string(Course::price));
+    }
+
+    std::string fromString(const std::string &string) override
+    {
+        std::string remain;
+
+        std::tie(
+            Course::studentAmount,
+            Course::price
+        ) = splitString<
+            decltype(Course::studentAmount),
+            decltype(Course::price)
+        >(string, '\n', &remain);
+
+        return remain;
     }
 };
 
@@ -250,6 +307,54 @@ private:
     std::unordered_map<size_t, Course> courses;
 
 public:
-    std::string toString() const;
-    void fromString(const std::string &);
+    ScientificSubdivision(const std::string &name,
+                          const std::string &director,
+                          size_t graduateAmount,
+                          size_t employeeAmount,
+                          std::unordered_map<size_t, Course> courses = {})
+        : BaseSubdivision(name, director, graduateAmount, employeeAmount), courses(std::move(courses))
+    {}
+
+    decltype(std::declval<BaseSubdivision>().getGraduateAmount()) getStudentsAmount() const noexcept override
+    {
+        decltype(std::declval<BaseSubdivision>().getGraduateAmount()) returnValue = 0;
+        for (const auto &it : courses) {
+            returnValue += it.second.getStudentAmount();
+        }
+        return BaseSubdivision::graduateAmount + returnValue;
+    }
+
+    std::string toString() const override
+    {
+        std::string coursesString = std::to_string(ScientificSubdivision::courses.size()) + std::string("\n");
+        for (const auto &course : ScientificSubdivision::courses) {
+            coursesString += std::to_string(course.first) + std::string("\n") + course.second.toString();
+            coursesString += "\n";
+        }
+        coursesString = coursesString.substr(0, coursesString.size() - 1);
+
+        return (
+            BaseSubdivision::toString() + std::string("\n")
+                + coursesString
+        );
+    }
+
+    std::string fromString(const std::string &string) override
+    {
+        std::string remain = BaseSubdivision::fromString(string);
+        ScientificSubdivision::courses.clear();
+
+        size_t projectsAmount;
+        std::tie(projectsAmount) = splitString<size_t>(remain, '\n', &remain);
+        for (size_t i = 0; i < projectsAmount; i++) {
+            Course course(0, 0);
+            decltype(courses)::key_type key;
+            std::tie(key) = splitString<decltype(key)>(remain, '\n', &remain);
+            remain = course.fromString(remain);
+            ScientificSubdivision::courses.insert({key, course});
+        }
+
+        return remain;
+    }
+
 };
