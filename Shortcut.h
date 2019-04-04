@@ -81,7 +81,7 @@ std::tuple<T...> splitString(std::string line, char splitter = ' ')
     std::vector<std::string> substrings;
     auto iterator = line.cend();
     while ((iterator = std::find(line.cbegin(), line.cend(), splitter)) != line.cend()) {
-        substrings.push_back(std::string(line.cbegin(), iterator));
+        substrings.emplace_back(line.cbegin(), iterator);
         line = std::string(iterator + 1, line.cend());
     }
     substrings.push_back(line);

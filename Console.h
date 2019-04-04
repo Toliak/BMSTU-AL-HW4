@@ -1,11 +1,8 @@
 #pragma once
 
-#include <iostream>
 #include <string>
-#include <tuple>
 #include <unordered_map>
 #include <list>
-#include <functional>
 
 class Console
 {

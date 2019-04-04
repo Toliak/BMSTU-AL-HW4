@@ -2,30 +2,52 @@
 
 #include <exception>
 
-class Exception : virtual public std::exception
+class Exception: virtual public std::exception
 {
 private:
     std::string errorText;
 
 public:
-    Exception(std::string text) :
-        errorText(std::move(text))
+    explicit Exception(std::string text)
+        : errorText(std::move(text))
     {
 
     }
 
-    virtual const char *what() const noexcept
+    const char *what() const noexcept override
     {
         return errorText.c_str();
     }
 };
 
-class ProjectException: virtual public Exception
+class ModelException: public Exception
 {
 public:
-    ProjectException(std::string text) :
-        Exception(std::move(text))
-    {
+    explicit ModelException(std::string text)
+        : Exception(std::move(text))
+    {}
+};
 
-    }
+class BaseSubdivisionModelException: public ModelException
+{
+public:
+    explicit BaseSubdivisionModelException(std::string text)
+        : ModelException(std::move(text))
+    {}
+};
+
+class ProjectModelException final: public ModelException
+{
+public:
+    explicit ProjectModelException(std::string text)
+        : ModelException(std::move(text))
+    {}
+};
+
+class CourseModelException final: public ModelException
+{
+public:
+    explicit CourseModelException(std::string text)
+        : ModelException(std::move(text))
+    {}
 };

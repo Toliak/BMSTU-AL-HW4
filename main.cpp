@@ -39,17 +39,11 @@ void executeCommand(Console &console, const std::pair<std::string, std::string> 
     return iterator->second(console, pair.second);
 }
 
+
 int main()
 {
-    // _split<Numbers<1, 2, 3>, int, double, char>();
-
-    using T = _GenerateNumbers<5, _Numbers<>>::type;
-    auto t = T();
-
-    auto tuple = splitString<int, double, std::string, char, std::string>("1\n3.6\nkkk kk\ni\nasd asd asd s", '\n');
-
-
-
+    Project p;
+    p.fromString("asdasdasdasdpa posdpa ojspfoaj sofapofj \n5252");
 
     Console console(std::cin, std::cout);
     console.start();
