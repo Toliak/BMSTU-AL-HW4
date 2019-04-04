@@ -185,6 +185,7 @@ private:
 
 public:
 
+
     EducationalSubdivision(const std::string &name,
                            const std::string &director,
                            decltype(std::declval<BaseSubdivision>().getGraduateAmount()) graduateAmount,
@@ -205,19 +206,9 @@ public:
 
     std::string toString() const override
     {
-        std::string projectsString = std::to_string(EducationalSubdivision::projects.size()) + std::string("\n");
-        auto preEndIterator = EducationalSubdivision::projects.cend();
-        preEndIterator--;
-        for (auto it = EducationalSubdivision::projects.cbegin(); it != EducationalSubdivision::projects.cend(); it++) {
-            projectsString += it->toString();
-            if (it != preEndIterator) {
-                projectsString += "\n";
-            }
-        }
-
         return (
             BaseSubdivision::toString() + std::string("\n")
-                + projectsString
+                + vectorToString(EducationalSubdivision::projects)
         );
     }
 
@@ -318,7 +309,7 @@ public:
     decltype(std::declval<BaseSubdivision>().getGraduateAmount()) getStudentsAmount() const noexcept override
     {
         decltype(std::declval<BaseSubdivision>().getGraduateAmount()) returnValue = 0;
-        for (const auto &it : courses) {
+        for (const auto &it : ScientificSubdivision::courses) {
             returnValue += it.second.getStudentAmount();
         }
         return BaseSubdivision::graduateAmount + returnValue;

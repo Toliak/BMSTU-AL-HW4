@@ -103,3 +103,19 @@ std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string 
 
     return _splitString<typename _GenerateNumbers<sizeof...(T), _Numbers<>>::type, T...>(resultIterator).value;
 }
+
+template <typename T>
+std::string vectorToString(const std::vector<T> &vector)
+{
+    std::string result = std::to_string(vector.size()) + std::string("\n");
+    auto preEndIterator = vector.cend();
+    preEndIterator--;
+    for (auto it = vector.cbegin(); it != vector.cend(); it++) {
+        result += it->toString();
+        if (it != preEndIterator) {
+            result += "\n";
+        }
+    }
+
+    return result;
+}

@@ -56,6 +56,9 @@ void test()
 
     std::string result3 = ss.fromString("Test tested\nThe big director\n14\n500\n2\n1\n14\n400\n4\n70\n600\ndfg dfg");
 
+    std::cout << es.toString() << std::endl;
+    std::cout << ss.toString() << std::endl;
+
     return;
 }
 
