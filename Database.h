@@ -20,6 +20,15 @@ public:
         : name(std::move(name))
     {}
 
+    const std::string &getName() const
+    {
+        return name;
+    }
+
+    BaseDatabase(BaseDatabase&&) = default;
+    BaseDatabase(const BaseDatabase&) = delete;
+    BaseDatabase& operator=(const BaseDatabase&) = delete;
+
     virtual std::string fromString(const std::string &string) = 0;
 
     virtual std::string toString() const = 0;
@@ -27,30 +36,45 @@ public:
     virtual ~BaseDatabase() = default;
 };
 
-template <class T>
-class SingleDatabase: virtual public BaseDatabase
+class HybridDatabase: virtual public BaseDatabase, public std::vector<BaseSubdivision*>
 {
-    std::vector<T> models;
-
 public:
-    using ModelType = T;
-
-    explicit SingleDatabase(const std::string& name)
+    explicit HybridDatabase(const std::string &name)
         : BaseDatabase(name)
     {}
 
-    std::vector<T> &getModels()
-    {
-        return models;
-    }
-
     std::string fromString(const std::string &string) override
     {
-        return std::__cxx11::string();
+        std::string remain;
+        size_t elementAmount;
+        std::tie(BaseDatabase::name, elementAmount) = splitString<std::string, size_t>(string, '\n', &remain);
+
+        for (size_t i = 0; i < elementAmount; i++) {
+            std::string modelType;
+            std::tie(modelType) = splitString<std::string>(remain, '\n', &remain);
+
+            BaseSubdivision *subdivision;
+            if (modelType == "EducationalSubdivision") {
+                subdivision = new EducationalSubdivision("","",0,0);
+            } else if (modelType == "ScientificSubdivision") {
+                subdivision = new ScientificSubdivision("","",0,0);
+            } else {
+                throw HybridDatabaseException("HybridDatabase: wrong model type");
+            }
+            remain = subdivision->fromString(remain);
+            std::vector<BaseSubdivision*>::emplace_back(subdivision);
+        }
+
+        return remain;
     }
 
     std::string toString() const override
     {
-        return BaseDatabase::name + std::string("\n") + vectorToString(models);
+        return BaseDatabase::name + std::string("\n") + vectorToString(
+            *this,
+            [](const BaseSubdivision * const baseSubdivision) {
+                return baseSubdivision->getModelName() + std::string("\n") + baseSubdivision->toString();
+            }
+        );
     }
 };

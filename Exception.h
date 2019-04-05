@@ -5,7 +5,7 @@
 class Exception: virtual public std::exception
 {
 private:
-    std::string errorText;
+    std::string errorText = "";
 
 public:
     explicit Exception(std::string text)
@@ -18,6 +18,22 @@ public:
     {
         return errorText.c_str();
     }
+};
+
+class ShortcutException: public Exception
+{
+public:
+    explicit ShortcutException(const std::string &text)
+        : Exception(text)
+    {}
+};
+
+class SplitShortcutException final: public ShortcutException
+{
+public:
+    explicit SplitShortcutException(const std::string &text)
+        : ShortcutException(text)
+    {}
 };
 
 class ModelException: public Exception
@@ -49,5 +65,21 @@ class CourseModelException final: public ModelException
 public:
     explicit CourseModelException(std::string text)
         : ModelException(std::move(text))
+    {}
+};
+
+class DatabaseException: public Exception
+{
+public:
+    explicit DatabaseException(const std::string &text)
+        : Exception(text)
+    {}
+};
+
+class HybridDatabaseException final: public DatabaseException
+{
+public:
+    explicit HybridDatabaseException(const std::string& text)
+        : DatabaseException(text)
     {}
 };

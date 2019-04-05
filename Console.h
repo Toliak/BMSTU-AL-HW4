@@ -5,6 +5,8 @@
 #include <list>
 #include <algorithm>
 
+#include "Shortcut.h"
+
 class Console
 {
 private:
@@ -40,9 +42,18 @@ public:
         *ostream << "Welcome to the Toliak's DB.\nEnter ? or 'help' to get available commands." << std::endl;
     }
 
+    template <typename T>
+    T pureInput(const std::string &output)
+    {
+        *ostream << output;
+        std::string input;
+        std::getline(*istream, input);
+        return fromString<T>(input);
+    }
+
     std::string getLine()
     {
-        for (auto it : prefixes) {
+        for (const auto& it : prefixes) {
             *ostream << it << " ";
         }
         *ostream << "> ";

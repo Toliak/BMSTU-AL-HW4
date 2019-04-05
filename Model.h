@@ -14,6 +14,7 @@
 class Model
 {
 public:
+    virtual std::string getModelName() const noexcept = 0;
     virtual std::string toString() const = 0;
     virtual std::string fromString(const std::string &) = 0;
 
@@ -54,6 +55,11 @@ public:
     decltype(Project::price) getPrice() const noexcept
     {
         return Project::price;
+    }
+
+    std::string getModelName() const noexcept override
+    {
+        return "Project";
     }
 
     std::string toString() const override
@@ -178,7 +184,7 @@ public:
     virtual decltype(BaseSubdivision::graduateAmount) getStudentsAmount() const noexcept = 0;
 };
 
-class EducationalSubdivision: virtual public BaseSubdivision
+class EducationalSubdivision final: virtual public BaseSubdivision
 {
 private:
     std::vector<Project> projects;
@@ -204,11 +210,18 @@ public:
         return EducationalSubdivision::projects;
     }
 
+    std::string getModelName() const noexcept override
+    {
+        return "EducationalSubdivision";
+    }
+
     std::string toString() const override
     {
         return (
             BaseSubdivision::toString() + std::string("\n")
-                + vectorToString(EducationalSubdivision::projects)
+                + vectorToString(EducationalSubdivision::projects, [](const Project &project) {
+                    return project.toString();
+                })
         );
     }
 
@@ -236,6 +249,7 @@ private:
     size_t price = 0;
 
 public:
+
     Course(decltype(Course::studentAmount) studentAmount, decltype(Course::price) price)
     {
         Course::setStudentAmount(studentAmount);
@@ -268,6 +282,11 @@ public:
         return price;
     }
 
+    std::string getModelName() const noexcept override
+    {
+        return "Course";
+    }
+
     std::string toString() const override
     {
         return (std::to_string(Course::studentAmount) + std::string("\n") + std::to_string(Course::price));
@@ -289,13 +308,12 @@ public:
     }
 };
 
-
 // TODO: заменить size_t на типы меньшей размерности
 
-class ScientificSubdivision: virtual public BaseSubdivision
+class ScientificSubdivision final: virtual public BaseSubdivision
 {
 private:
-    std::unordered_map<size_t, Course> courses;
+    std::unordered_map<size_t, Course> courses = {};
 
 public:
     ScientificSubdivision(const std::string &name,
@@ -313,6 +331,16 @@ public:
             returnValue += it.second.getStudentAmount();
         }
         return BaseSubdivision::graduateAmount + returnValue;
+    }
+
+    decltype(ScientificSubdivision::courses) &getCourses()
+    {
+        return ScientificSubdivision::courses;
+    }
+
+    std::string getModelName() const noexcept override
+    {
+        return "ScientificSubdivision";
     }
 
     std::string toString() const override

@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+#include "Exception.h"
+
 template <typename T>
 struct _fromString
 {
@@ -78,9 +80,7 @@ struct _splitString<_Numbers<B...>, T...>
 template<typename ...T>
 std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string * const remain = nullptr)
 {
-    if (remain) {
-        remain->clear();
-    }
+    constexpr size_t templateSize = sizeof...(T);
     std::vector<std::string> substrings;
     std::string::const_iterator iterator;
     size_t separatorCounter = 0;
@@ -89,29 +89,52 @@ std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string 
         substrings.emplace_back(line.cbegin(), iterator);
         line = std::string(iterator + 1, line.cend());
         separatorCounter++;
-        if (separatorCounter >= sizeof...(T)) {
+        if (separatorCounter >= templateSize) {
             break;
         }
     }
-    if (separatorCounter < sizeof...(T)) {
+    if (separatorCounter < templateSize) {
         substrings.emplace_back(line);
     } else if (remain) {
         *remain = line;
     }
+    if (substrings.size() < templateSize) {
+        throw SplitShortcutException("splitString: excepted at least " + std::to_string(templateSize) + " substrings");
+    }
 
     auto resultIterator = substrings.cbegin();
 
-    return _splitString<typename _GenerateNumbers<sizeof...(T), _Numbers<>>::type, T...>(resultIterator).value;
+    return _splitString<typename _GenerateNumbers<templateSize, _Numbers<>>::type, T...>(resultIterator).value;
 }
 
+/*
 template <typename T>
-std::string vectorToString(const std::vector<T> &vector)
+struct _vectorToString
+{
+    std::string toString(typename std::vector<T>::const_iterator &value) const
+    {
+        return value->toString();
+    }
+};
+
+template <typename T>
+struct _vectorToString<T*>
+{
+    std::string toString(typename std::vector<T*>::const_iterator &value) const
+    {
+        return (*value)->toString();
+    }
+};
+*/
+
+template <typename T, typename F>
+std::string vectorToString(const std::vector<T> &vector, F stringify)
 {
     std::string result = std::to_string(vector.size()) + std::string("\n");
     auto preEndIterator = vector.cend();
     preEndIterator--;
     for (auto it = vector.cbegin(); it != vector.cend(); it++) {
-        result += it->toString();
+        result += stringify(*it);
         if (it != preEndIterator) {
             result += "\n";
         }
