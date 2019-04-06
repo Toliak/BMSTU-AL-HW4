@@ -83,3 +83,19 @@ public:
         : DatabaseException(text)
     {}
 };
+
+class InteractionException: public Exception
+{
+public:
+    explicit InteractionException(const std::string &text)
+        : Exception(text)
+    {}
+};
+
+class ExecuteInteractionException final: public InteractionException
+{
+public:
+    explicit ExecuteInteractionException(const std::string &text)
+        : InteractionException(text)
+    {}
+};

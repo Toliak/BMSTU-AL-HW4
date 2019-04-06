@@ -5,16 +5,25 @@
 #include "Console.h"
 #include "Database.h"
 
+#include "Interaction.h"
+#include "Command/CommandsAll.h"
+
+/*
 struct MainInteraction
 {
     Console console;
     std::unordered_map<std::string, HybridDatabase> data = {};
     HybridDatabase *currentDatabase = nullptr;
 };
+*/
 
-void executeCommand(MainInteraction &interaction, const std::pair<std::string, std::string> &pair)
+
+void executeCommand(const std::pair<std::string, std::string> &pair)
 {
-    static std::unordered_map<std::string, std::function<void(MainInteraction &, const std::string &)>> commands = {
+
+
+
+    /*static std::unordered_map<std::string, std::function<void(MainInteraction &, const std::string &)>> commands = {
         {
             "help",
             [](MainInteraction &interaction, const std::string &) {
@@ -297,15 +306,17 @@ void executeCommand(MainInteraction &interaction, const std::pair<std::string, s
                 prefixes.pop_back();
             }
         }
-    };
+    };*/
 
-    auto iterator = commands.find(pair.first);
-    if (iterator == commands.cend()) {
-        interaction.console.getOstream() << "Command '" << pair.first << "' not found" << std::endl;
+    auto &interaction = Interaction::getInstance();
+
+    auto iterator = interaction.getCommands().find(pair.first);
+    if (iterator == interaction.getCommands().cend()) {
+        interaction.getConsole().getOstream() << "Command '" << pair.first << "' not found" << std::endl;
         return;
     }
 
-    return iterator->second(interaction, pair.second);
+    return iterator->second->execute(pair.second);
 }
 
 void test()
@@ -348,15 +359,19 @@ int main()
 {
     test();
 
-    MainInteraction interaction{
-        Console(std::cin, std::cout)
-    };
-    Console &console = interaction.console;
+    auto &interaction = Interaction::getInstance();
+
+    interaction.getConsole() = std::move(Console(std::cin, std::cout));
+    Console &console = interaction.getConsole();
     console.start();
 
     std::string command;
     while ((command = console.getLine()) != "exit") {
-        executeCommand(interaction, Console::divideCommand(command));
+        try {
+            interaction.executeCommand(Console::divideCommand(command));
+        } catch (Exception &e) {
+            std::cout << e.what() << std::endl;
+        }
     }
 
     std::cout << "Bye" << std::endl;
