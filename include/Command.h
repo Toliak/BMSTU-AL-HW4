@@ -1,7 +1,10 @@
 #pragma once
+#include "Model/Model.h"
 
 #include <utility>
 #include <string>
+
+#include "Interaction.h"
 
 #define REGISTER_COMMAND(commandName)             \
 class Command_##commandName: public Command                 \

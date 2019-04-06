@@ -10,16 +10,16 @@ std::string HybridDatabase::fromString(const std::string &string)
         std::string modelType;
         std::tie(modelType) = splitString<std::string>(remain, '\n', &remain);
 
-        BaseSubdivision *subdivision;
-        if (modelType == "EducationalSubdivision") {
-            subdivision = new EducationalSubdivision("","",0,0);
-        } else if (modelType == "ScientificSubdivision") {
-            subdivision = new ScientificSubdivision("","",0,0);
+        BaseSubdivisionModel *subdivision;
+        if (modelType == "EducationalSubdivisionModel") {
+            subdivision = new EducationalSubdivisionModel("","",0,0);
+        } else if (modelType == "ScientificSubdivisionModel") {
+            subdivision = new ScientificSubdivisionModel("","",0,0);
         } else {
             throw HybridDatabaseException("HybridDatabase: wrong model type");
         }
         remain = subdivision->fromString(remain);
-        std::vector<BaseSubdivision*>::emplace_back(subdivision);
+        std::vector<BaseSubdivisionModel*>::emplace_back(subdivision);
     }
 
     return remain;
@@ -29,7 +29,7 @@ std::string HybridDatabase::toString() const
 {
     return BaseDatabase::name + std::string("\n") + vectorToString(
         *this,
-        [](const BaseSubdivision * const baseSubdivision) {
+        [](const BaseSubdivisionModel * const baseSubdivision) {
             return baseSubdivision->getModelName() + std::string("\n") + baseSubdivision->toString();
         }
     );

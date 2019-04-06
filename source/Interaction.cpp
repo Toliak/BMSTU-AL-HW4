@@ -1,5 +1,5 @@
 #include "Interaction.h"
-
+#include "Command.h"
 
 void Interaction::executeCommand(const std::pair<std::string, std::string> &pair)
 {

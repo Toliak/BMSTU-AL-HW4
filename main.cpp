@@ -4,9 +4,7 @@
 
 #include "Console.h"
 #include "Database.h"
-
 #include "Interaction.h"
-#include "Command/CommandsAll.h"
 
 /*
 struct MainInteraction
@@ -17,13 +15,15 @@ struct MainInteraction
 };
 */
 
+/*
 
 void executeCommand(const std::pair<std::string, std::string> &pair)
 {
 
 
 
-    /*static std::unordered_map<std::string, std::function<void(MainInteraction &, const std::string &)>> commands = {
+
+static std::unordered_map<std::string, std::function<void(MainInteraction &, const std::string &)>> commands = {
         {
             "help",
             [](MainInteraction &interaction, const std::string &) {
@@ -128,61 +128,61 @@ void executeCommand(const std::pair<std::string, std::string> &pair)
 
                     HybridDatabase &db = *interaction.currentDatabase;
 
-                    BaseSubdivision *subdivision;
+                    BaseSubdivisionModel *subdivision;
                     std::tuple<
                         std::string,
                         std::string,
-                        decltype(std::declval<BaseSubdivision>().getGraduateAmount()),
-                        decltype(std::declval<BaseSubdivision>().getEmployeeAmount())
+                        decltype(std::declval<BaseSubdivisionModel>().getGraduateAmount()),
+                        decltype(std::declval<BaseSubdivisionModel>().getEmployeeAmount())
                     > baseInfo = {
                         console.pureInput<std::string>("Name: "),
                         console.pureInput<std::string>("Director: "),
-                        console.pureInput<decltype(std::declval<BaseSubdivision>().getGraduateAmount())>(
+                        console.pureInput<decltype(std::declval<BaseSubdivisionModel>().getGraduateAmount())>(
                             "Graduate amount: "
                         ),
-                        console.pureInput<decltype(std::declval<BaseSubdivision>().getEmployeeAmount())>(
+                        console.pureInput<decltype(std::declval<BaseSubdivisionModel>().getEmployeeAmount())>(
                             "Employee amount: "
                         )
                     };
 
                     if (modelType == "E") {
-                        auto *educationalSubdivision = new EducationalSubdivision(
+                        auto *educationalSubdivision = new EducationalSubdivisionModel(
                             std::get<0>(baseInfo),
                             std::get<1>(baseInfo),
                             std::get<2>(baseInfo),
                             std::get<3>(baseInfo)
                         );
 
-                        auto projectAmount = console.pureInput<size_t>("Project amount: ");
+                        auto projectAmount = console.pureInput<size_t>("ProjectModel amount: ");
                         for (size_t i = 0; i < projectAmount; i++) {
-                            Project project(
+                            ProjectModel project(
                                 console.pureInput<std::string>("\tName: "),
-                                console.pureInput<decltype(std::declval<Project>().getPrice())>("\tPrice: ")
+                                console.pureInput<decltype(std::declval<ProjectModel>().getPrice())>("\tPrice: ")
                             );
 
                             educationalSubdivision->getProjects().emplace_back(std::move(project));
                         }
                         subdivision = educationalSubdivision;
                     } else {
-                        auto *scientificSubdivision = new ScientificSubdivision(
+                        auto *scientificSubdivision = new ScientificSubdivisionModel(
                             std::get<0>(baseInfo),
                             std::get<1>(baseInfo),
                             std::get<2>(baseInfo),
                             std::get<3>(baseInfo)
                         );
 
-                        auto coursesAmount = console.pureInput<size_t>("Course amount: ");
+                        auto coursesAmount = console.pureInput<size_t>("CourseModel amount: ");
                         for (size_t i = 0; i < coursesAmount; i++) {
                             using CourseMap = std::remove_reference<
-                                decltype(std::declval<ScientificSubdivision>().getCourses())
+                                decltype(std::declval<ScientificSubdivisionModel>().getCourses())
                             >::type;
 
-                            auto courseKey = console.pureInput<CourseMap::key_type>("\tCourse: ");
-                            Course course(
+                            auto courseKey = console.pureInput<CourseMap::key_type>("\tCourseModel: ");
+                            CourseModel course(
                                 console.pureInput<
-                                    decltype(std::declval<Course>().getStudentAmount())
+                                    decltype(std::declval<CourseModel>().getStudentAmount())
                                 >("\tStudent amount: "),
-                                console.pureInput<decltype(std::declval<Course>().getPrice())>("\tPrice: ")
+                                console.pureInput<decltype(std::declval<CourseModel>().getPrice())>("\tPrice: ")
                             );
 
                             scientificSubdivision->getCourses().insert({courseKey, std::move(course)});
@@ -235,7 +235,7 @@ void executeCommand(const std::pair<std::string, std::string> &pair)
                 switch (index) {
                     case 1: {
                         for (auto it = db.cbegin(); it != db.cend(); it++) {
-                            BaseSubdivision &subdivision = **it;
+                            BaseSubdivisionModel &subdivision = **it;
                             stream << std::setw(4) << it - db.cbegin() << " | "
                                    << std::setw(7) << subdivision.getStudentsAmount()
                                    << std::endl;
@@ -260,7 +260,7 @@ void executeCommand(const std::pair<std::string, std::string> &pair)
                 } else {
                     HybridDatabase &db = *interaction.currentDatabase;
                     for (auto it = db.cbegin(); it != db.cend(); it++) {
-                        BaseSubdivision &subdivision = **it;
+                        BaseSubdivisionModel &subdivision = **it;
                         stream << std::setw(4) << it - db.cbegin() << " | "
                                << std::setw(1) << subdivision.getModelName()[0] << " | "
                                << std::setw(15) << subdivision.getName() << " | "
@@ -306,7 +306,8 @@ void executeCommand(const std::pair<std::string, std::string> &pair)
                 prefixes.pop_back();
             }
         }
-    };*/
+    };
+
 
     auto &interaction = Interaction::getInstance();
 
@@ -318,28 +319,29 @@ void executeCommand(const std::pair<std::string, std::string> &pair)
 
     return iterator->second->execute(pair.second);
 }
+*/
 
 void test()
 {
-    Project p("", 0);
+    ProjectModel p("", 0);
     p.fromString("asdasdasdasdpa posdpa ojspfoaj sofapofj \n5252");
 
     std::string remain;
     auto result0 = splitString<int, std::string>("3\nasdasd asd asd\nasdasda sdas d\n5.6\n686", '\n');
     auto result1 = splitString<int, std::string>("3\nasdasd asd asd", '\n', &remain);
 
-    EducationalSubdivision es("", "", 1, 1);
+    EducationalSubdivisionModel es("", "", 1, 1);
 
     std::string result2 = es.fromString("Test tested\nThe big director\n14\n500\n2\nasd\n4\nHEH\n600\ndfgdfg");
 
-    ScientificSubdivision ss("", "", 1, 1);
+    ScientificSubdivisionModel ss("", "", 1, 1);
 
     std::string result3 = ss.fromString("Test tested\nThe big director\n14\n500\n2\n1\n14\n400\n4\n70\n600\ndfg dfg");
 
     HybridDatabase db("");
     db.fromString("test\n"
                   "1\n"
-                  "EducationalSubdivision\n"
+                  "EducationalSubdivisionModel\n"
                   "ASDadasd\n"
                   "ASdaSdadsasda\n"
                   "1312\n"
@@ -349,7 +351,7 @@ void test()
                   "555"
     );
 
-    std::vector<BaseSubdivision *> &v = db;
+    std::vector<BaseSubdivisionModel *> &v = db;
 
     std::cout << es.toString() << std::endl;
     std::cout << ss.toString() << std::endl;

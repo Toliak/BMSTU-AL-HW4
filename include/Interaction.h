@@ -6,9 +6,7 @@
 #include "Database.h"
 #include "Interaction.h"
 
-#include "Command/Command.h"
-
-
+class Command;
 
 struct Interaction
 {

@@ -1,8 +1,9 @@
-#pragma once
-
 #include <tuple>
 
 #include "Command.h"
+#include "Model/ProjectModel.h"
+#include "Model/EducationalSubdivisionModel.h"
+#include "Model/ScientificSubdivisionModel.h"
 
 REGISTER_COMMAND(create)
 {
@@ -33,62 +34,62 @@ REGISTER_COMMAND(create)
 
         HybridDatabase &db = *Interaction::getInstance().getCurrentDatabase();
 
-        BaseSubdivision *subdivision;
+        BaseSubdivisionModel *subdivision;
         std::tuple<
             std::string,
             std::string,
-            decltype(std::declval<BaseSubdivision>().getGraduateAmount()),
-            decltype(std::declval<BaseSubdivision>().getEmployeeAmount())
+            decltype(std::declval<BaseSubdivisionModel>().getGraduateAmount()),
+            decltype(std::declval<BaseSubdivisionModel>().getEmployeeAmount())
         > baseInfo = {
             console.pureInput<std::string>("Name: "),
             console.pureInput<std::string>("Director: "),
-            console.pureInput<decltype(std::declval<BaseSubdivision>().getGraduateAmount())>(
+            console.pureInput<decltype(std::declval<BaseSubdivisionModel>().getGraduateAmount())>(
                 "Graduate amount: "
             ),
-            console.pureInput<decltype(std::declval<BaseSubdivision>().getEmployeeAmount())>(
+            console.pureInput<decltype(std::declval<BaseSubdivisionModel>().getEmployeeAmount())>(
                 "Employee amount: "
             )
         };
 
 
         if (modelType == "E") {
-            auto *educationalSubdivision = new EducationalSubdivision(
+            auto *educationalSubdivision = new EducationalSubdivisionModel(
                 std::get<0>(baseInfo),
                 std::get<1>(baseInfo),
                 std::get<2>(baseInfo),
                 std::get<3>(baseInfo)
             );
 
-            auto projectAmount = console.pureInput<size_t>("Project amount: ");
+            auto projectAmount = console.pureInput<size_t>("ProjectModel amount: ");
             for (size_t i = 0; i < projectAmount; i++) {
-                Project project(
+                ProjectModel project(
                     console.pureInput<std::string>("\tName: "),
-                    console.pureInput<decltype(std::declval<Project>().getPrice())>("\tPrice: ")
+                    console.pureInput<decltype(std::declval<ProjectModel>().getPrice())>("\tPrice: ")
                 );
 
                 educationalSubdivision->getProjects().emplace_back(std::move(project));
             }
             subdivision = educationalSubdivision;
         } else {
-            auto *scientificSubdivision = new ScientificSubdivision(
+            auto *scientificSubdivision = new ScientificSubdivisionModel(
                 std::get<0>(baseInfo),
                 std::get<1>(baseInfo),
                 std::get<2>(baseInfo),
                 std::get<3>(baseInfo)
             );
 
-            auto coursesAmount = console.pureInput<size_t>("Course amount: ");
+            auto coursesAmount = console.pureInput<size_t>("CourseModel amount: ");
             for (size_t i = 0; i < coursesAmount; i++) {
                 using CourseMap = std::remove_reference<
-                    decltype(std::declval<ScientificSubdivision>().getCourses())
+                    decltype(std::declval<ScientificSubdivisionModel>().getCourses())
                 >::type;
 
-                auto courseKey = console.pureInput<CourseMap::key_type>("\tCourse: ");
-                Course course(
+                auto courseKey = console.pureInput<CourseMap::key_type>("\tCourseModel: ");
+                CourseModel course(
                     console.pureInput<
-                        decltype(std::declval<Course>().getStudentAmount())
+                        decltype(std::declval<CourseModel>().getStudentAmount())
                     >("\tStudent amount: "),
-                    console.pureInput<decltype(std::declval<Course>().getPrice())>("\tPrice: ")
+                    console.pureInput<decltype(std::declval<CourseModel>().getPrice())>("\tPrice: ")
                 );
 
                 scientificSubdivision->getCourses().insert({courseKey, std::move(course)});

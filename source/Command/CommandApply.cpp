@@ -1,4 +1,4 @@
-#pragma once
+#include <iomanip>
 
 #include "Command.h"
 
@@ -21,7 +21,7 @@ REGISTER_COMMAND(apply)
     switch (index) {
         case 1: {
             for (auto it = db.cbegin(); it != db.cend(); it++) {
-                BaseSubdivision &subdivision = **it;
+                BaseSubdivisionModel &subdivision = **it;
                 stream << std::setw(4) << it - db.cbegin() << " | "
                        << std::setw(7) << subdivision.getStudentsAmount()
                        << std::endl;

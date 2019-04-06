@@ -4,7 +4,9 @@
 #include <fstream>
 
 #include "Exception.h"
-#include "Model.h"
+#include "Model/BaseSubdivisionModel.h"
+#include "Model/EducationalSubdivisionModel.h"
+#include "Model/ScientificSubdivisionModel.h"
 
 class BaseDatabase
 {
@@ -32,7 +34,7 @@ public:
     virtual ~BaseDatabase() = default;
 };
 
-class HybridDatabase: virtual public BaseDatabase, public std::vector<BaseSubdivision*>
+class HybridDatabase: virtual public BaseDatabase, public std::vector<BaseSubdivisionModel*>
 {
 public:
     explicit HybridDatabase(const std::string &name)
