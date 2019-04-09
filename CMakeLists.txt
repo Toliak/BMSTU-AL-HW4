@@ -5,27 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(BMSTU_HW_4_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set(
-        BMSTU_HW_4_SOURCE_COMMAND
-        source/Command/CommandHelp.cpp
-        source/Command/CommandSave.cpp
-        source/Command/CommandApply.cpp
-        source/Command/CommandCreate.cpp
-        source/Command/CommandGo.cpp
-        source/Command/CommandLeave.cpp
-        source/Command/CommandList.cpp
-        source/Command/CommandLoad.cpp
-        source/Command/CommandRemove.cpp
-)
+file(GLOB BMSTU_HW_4_SOURCE_COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/source/Command/*.cpp")
 
-set(
-        BMSTU_HW_4_SOURCE_MODEL
-        source/Model/BaseSubdivisionModel.cpp
-        source/Model/ProjectModel.cpp
-        source/Model/CourseModel.cpp
-        source/Model/EducationalSubdivisionModel.cpp
-        source/Model/ScientificSubdivisionModel.cpp
-)
+file(GLOB BMSTU_HW_4_SOURCE_MODEL "${CMAKE_CURRENT_SOURCE_DIR}/source/Model/*.cpp")
 
 set(
         BMSTU_HW_4_SOURCE
