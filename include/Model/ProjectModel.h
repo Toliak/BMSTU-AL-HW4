@@ -2,11 +2,14 @@
 
 #include "Model.h"
 
+/**
+ * @brief Модель проекта
+ */
 class ProjectModel: virtual public Model
 {
 private:
-    std::string name;
-    size_t price = 0;
+    std::string name;           ///< Название проекта
+    size_t price = 0;           ///< Цена проекта
 
 public:
     ProjectModel(std::string name, decltype(ProjectModel::price) price);

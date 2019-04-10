@@ -6,6 +6,12 @@
 
 #include "Interaction.h"
 
+/**
+ * @brief Макрос для создания команд
+ * @detail Создается класс с описанной функцией. Объект класса регистрируется
+ * @param commandName Название команды
+ * @param f Тело функции (как аргумент используется строка аргументов команды)
+ */
 #define REGISTER_COMMAND(commandName)             \
 class Command_##commandName: public Command                 \
 {                                                           \
@@ -19,6 +25,9 @@ Interaction::getInstance().registerCommand(#commandName, new Command_##commandNa
 void Command_##commandName::execute(const std::string &string)
 
 
+/**
+ * @brief Абстрактный класс команды
+ */
 class Command
 {
 public:
