@@ -1,64 +1,70 @@
 #include <iostream>
 #include <functional>
+#include <iomanip>
 
 #include "Console.h"
 #include "Database.h"
+#include "Interaction.h"
+#include "Exception.h"
 
-void executeCommand(Console &console, const std::pair<std::string, std::string> &pair)
+void test()
 {
-    static std::unordered_map<std::string, std::function<void(Console &, const std::string &)>> commands = {
-        {
-            "help",
-            [](Console &console, const std::string &)
-            {
-                executeCommand(console, {"?", ""});
-            }
-        },
-        {
-            "?",
-            [](Console &console, const std::string &)
-            {
-                std::ostream &stream = console.getOstream();
-                stream << "Available commands:" << std::endl;
-                stream << "\t?, help - to get available commands" << std::endl;
-                stream << "\tload - to load database from file" << std::endl;
-                stream << "\tsave - to save database to file" << std::endl;
-                stream << "\tgo [DB name] - to go into database" << std::endl;
-                stream << "\tleave - to leave database to file" << std::endl;
-                stream << "\texit - to exit" << std::endl;
-            }
-        },
-    };
+    ProjectModel p("", 0);
+    p.fromString("asdasdasdasdpa posdpa ojspfoaj sofapofj \n5252");
 
-    auto iterator = commands.find(pair.first);
-    if (iterator == commands.cend()) {
-        console.getOstream() << "Command '" << pair.first << "' not found" << std::endl;
-        return;
-    }
+    std::string remain;
+    auto result0 = splitString<int, std::string>("3\nasdasd asd asd\nasdasda sdas d\n5.6\n686", '\n');
+    auto result1 = splitString<int, std::string>("3\nasdasd asd asd", '\n', &remain);
 
-    return iterator->second(console, pair.second);
+    EducationalSubdivisionModel es("", "", 1, 1);
+
+    std::string result2 = es.fromString("Test tested\nThe big director\n14\n500\n2\nasd\n4\nHEH\n600\ndfgdfg");
+
+    ScientificSubdivisionModel ss("", "", 1, 1);
+
+    std::string result3 = ss.fromString("Test tested\nThe big director\n14\n500\n2\n1\n14\n400\n4\n70\n600\ndfg dfg");
+
+    HybridDatabase db("");
+    db.fromString("test\n"
+                  "1\n"
+                  "EducationalSubdivisionModel\n"
+                  "ASDadasd\n"
+                  "ASdaSdadsasda\n"
+                  "1312\n"
+                  "13123\n"
+                  "1\n"
+                  "Projecascasdas\n"
+                  "555"
+    );
+
+    std::vector<BaseSubdivisionModel *> &v = db;
+
+    std::cout << es.toString() << std::endl;
+    std::cout << ss.toString() << std::endl;
 }
 
 int main()
 {
-    // _split<Numbers<1, 2, 3>, int, double, char>();
+    test();
 
-    using T = _GenerateNumbers<5, _Numbers<>>::type;
-    auto t = T();
+    auto &interaction = Interaction::getInstance();
 
-    auto tuple = splitString<int, double, std::string, char, std::string>("1\n3.6\nkkk kk\ni\nasd asd asd s", '\n');
-
-
-
-
-    Console console(std::cin, std::cout);
+    interaction.getConsole() = std::move(Console(std::cin, std::cout));
+    Console &console = interaction.getConsole();
     console.start();
 
     std::string command;
     while ((command = console.getLine()) != "exit") {
-        executeCommand(console, console.divideCommand(command));
+        try {
+            interaction.executeCommand(Console::divideCommand(command));
+        } catch (SplitShortcutException &e) {
+            console.getOstream() << "Arguments mismatch" << std::endl
+                                 << "\t" << e.what() << std::endl;
+        } catch (Exception &e) {
+            console.getOstream() << e.what() << std::endl;
+        }
     }
 
-    std::cout << "Bye" << std::endl;
+    console.getOstream() << "Bye" << std::endl;
     return 0;
 }
