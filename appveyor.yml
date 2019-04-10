@@ -5,9 +5,9 @@ branches:
     - develop
 clone_folder: c:\projects\cmake-init
 image:
-  - Visual Studio 2013
-  - Visual Studio 2015
   - Visual Studio 2017
+  - Visual Studio 2015
+  - Visual Studio 2013
 configuration:
   - Release
   - Debug
@@ -39,12 +39,6 @@ before_build:
       cmake .. -G %generator%
 
 build:
-  project: c:\projects\cmake-init\build\template.sln
+  project: c:\projects\cmake-init\template.sln
   verbosity: minimal
   parallel: true
-only_commits:
-  files:
-    - CMakeLists.txt
-    - appveyor.yml
-    - source/
-    - cmake/
