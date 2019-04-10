@@ -37,6 +37,8 @@ before_build:
       cd build
       cmake --version
       cmake .. -G %generator%
+      cd ..
+      tree
 
 build:
   project: c:\projects\cmake-init\template.sln
