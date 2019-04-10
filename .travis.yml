@@ -19,5 +19,6 @@ script:
   - sudo ln -s /usr/bin/gcc-8 /usr/local/bin/gcc
   - sudo ln -s /usr/bin/g++-8 /usr/local/bin/g++
   - mkdir -p cmake-build-debug
-  - cmake -H. -B cmake-build-debug
-  - cmake --build cmake-build-debug
+  - cd cmake-build-debug
+  - cmake ../
+  - cmake --build .
