@@ -79,7 +79,7 @@ public:
 class HybridDatabaseException final: public DatabaseException
 {
 public:
-    explicit HybridDatabaseException(const std::string& text)
+    explicit HybridDatabaseException(const std::string &text)
         : DatabaseException(text)
     {}
 };

@@ -12,14 +12,14 @@ class Console
 private:
     std::istream *istream = nullptr;
     std::ostream *ostream = nullptr;
-    
+
     std::list<std::string> prefixes = {};
 
 public:
     Console() = default;
 
-    Console(std::istream &istream, std::ostream &ostream):
-        istream(&istream), ostream(&ostream)
+    Console(std::istream &istream, std::ostream &ostream)
+        : istream(&istream), ostream(&ostream)
     {
 
     }
@@ -44,7 +44,7 @@ public:
         *ostream << "Welcome to the Toliak's DB.\nEnter 'help' to get available commands." << std::endl;
     }
 
-    template <typename T>
+    template<typename T>
     T pureInput(const std::string &output)
     {
         *ostream << output;

@@ -2,7 +2,7 @@
 
 std::string Console::getLine()
 {
-    for (const auto& it : prefixes) {
+    for (const auto &it : prefixes) {
         *ostream << it << " ";
     }
     *ostream << "> ";

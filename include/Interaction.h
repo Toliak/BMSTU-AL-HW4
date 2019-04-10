@@ -21,7 +21,7 @@ protected:
     std::unordered_map<std::string, HybridDatabase> data = {};
     HybridDatabase *currentDatabase = nullptr;
 
-    std::unordered_map<std::string, Command*> commands = {};
+    std::unordered_map<std::string, Command *> commands = {};
 
 public:
     Interaction(const Interaction &) = delete;
@@ -39,7 +39,7 @@ public:
         return *Interaction::instance;
     }
 
-    bool registerCommand(const std::string& name, Command *command) noexcept;
+    bool registerCommand(const std::string &name, Command *command) noexcept;
 
     void executeCommand(const std::pair<std::string, std::string> &pair);
 

@@ -23,9 +23,9 @@ public:
         return name;
     }
 
-    BaseDatabase(BaseDatabase&&) = default;
-    BaseDatabase(const BaseDatabase&) = delete;
-    BaseDatabase& operator=(const BaseDatabase&) = delete;
+    BaseDatabase(BaseDatabase &&) = default;
+    BaseDatabase(const BaseDatabase &) = delete;
+    BaseDatabase &operator=(const BaseDatabase &) = delete;
 
     virtual std::string fromString(const std::string &string) = 0;
 
@@ -34,16 +34,16 @@ public:
     virtual ~BaseDatabase() = default;
 };
 
-class HybridDatabase: virtual public BaseDatabase, public std::vector<BaseSubdivisionModel*>
+class HybridDatabase: virtual public BaseDatabase, public std::vector<BaseSubdivisionModel *>
 {
 public:
     explicit HybridDatabase(const std::string &name)
         : BaseDatabase(name)
     {}
 
-    HybridDatabase(HybridDatabase&&) = default;
-    HybridDatabase(const HybridDatabase&) = delete;
-    HybridDatabase& operator=(const HybridDatabase&) = delete;
+    HybridDatabase(HybridDatabase &&) = default;
+    HybridDatabase(const HybridDatabase &) = delete;
+    HybridDatabase &operator=(const HybridDatabase &) = delete;
 
     ~HybridDatabase() override;     //TODO: реализовать
 
