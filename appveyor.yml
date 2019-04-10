@@ -2,6 +2,7 @@ version: '{build}'
 branches:
   only:
     - master
+    - develop
 clone_folder: c:\projects\cmake-init
 image:
   - Visual Studio 2013
