@@ -7,7 +7,7 @@ REGISTER_COMMAND(load)
 
     std::ifstream inputFile;
     inputFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-    inputFile.open(dbName);
+    inputFile.open("db/" + dbName + ".txt");
 
     std::string wholeFile(
         (std::istreambuf_iterator<char>(inputFile)),

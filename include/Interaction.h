@@ -33,6 +33,7 @@ public:
     static Interaction &getInstance()
     {
         if (!Interaction::instance) {
+            // Exists till the program closed
             Interaction::instance = new Interaction();
         }
         return *Interaction::instance;

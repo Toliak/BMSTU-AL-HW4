@@ -41,6 +41,12 @@ public:
         : BaseDatabase(name)
     {}
 
+    HybridDatabase(HybridDatabase&&) = default;
+    HybridDatabase(const HybridDatabase&) = delete;
+    HybridDatabase& operator=(const HybridDatabase&) = delete;
+
+    ~HybridDatabase() override;     //TODO: реализовать
+
     std::string fromString(const std::string &string) override;
 
     std::string toString() const override;

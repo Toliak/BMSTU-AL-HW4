@@ -34,3 +34,8 @@ std::string HybridDatabase::toString() const
         }
     );
 }
+
+HybridDatabase::~HybridDatabase()
+{
+
+}

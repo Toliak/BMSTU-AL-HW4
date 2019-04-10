@@ -10,7 +10,7 @@ REGISTER_COMMAND(save)
 
     const HybridDatabase &database = *Interaction::getInstance().getCurrentDatabase();
 
-    std::ofstream outputFile(database.getName());
+    std::ofstream outputFile("db/" + database.getName() + ".txt");
     outputFile << database.toString() << std::endl;
 
     stream << "File has been saved" << std::endl;

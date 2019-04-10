@@ -81,6 +81,10 @@ struct _splitString<_Numbers<B...>, T...>
 template<typename ...T>
 std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string * const remain = nullptr)
 {
+    if (line.empty()) {
+        throw SplitShortcutException("splitString: expected non-empty string");
+    }
+
     constexpr size_t templateSize = sizeof...(T);
     std::vector<std::string> substrings;
     std::string::const_iterator iterator;

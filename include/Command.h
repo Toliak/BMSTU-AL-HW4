@@ -14,6 +14,7 @@ class Command_##commandName: public Command                 \
     static bool registerCommandResult;                      \
 };                                                          \
 bool Command_##commandName::registerCommandResult =         \
+/* Exists till the program closed         */             \
 Interaction::getInstance().registerCommand(#commandName, new Command_##commandName()); \
 void Command_##commandName::execute(const std::string &string)
 

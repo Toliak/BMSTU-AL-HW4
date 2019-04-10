@@ -18,12 +18,12 @@ REGISTER_COMMAND(help)
     stream << "\tleave - to leave database" << std::endl;
 
     stream << "Models commands:" << std::endl;
-    stream << "\t?list - get list of models in database" << std::endl;
+    stream << "\tlist - get list of models in database" << std::endl;
     stream << "\tcreate [entity type] - to create entity" << std::endl;
     stream << "\t\tS - scientific subdivision" << std::endl;
     stream << "\t\tE - educational subdivision" << std::endl;
     stream << "\tremove [ID] - to remove entity" << std::endl;
-    stream << "\t?apply [algorithm ID] - to apply predefined algorithm" << std::endl;
+    stream << "\tapply [algorithm ID] - to apply predefined algorithm" << std::endl;
     stream << "\t\t 0 - to count amount of students for every subdivision" << std::endl;
     stream << "\t\t 1 [Director] - to find subdivision by director" << std::endl;
     stream << "\t\t 2 - to sort subdivisions by name" << std::endl;
