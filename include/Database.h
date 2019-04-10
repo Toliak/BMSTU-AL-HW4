@@ -45,7 +45,7 @@ public:
     HybridDatabase(const HybridDatabase &) = delete;
     HybridDatabase &operator=(const HybridDatabase &) = delete;
 
-    ~HybridDatabase() override;     //TODO: реализовать
+    ~HybridDatabase() override;
 
     std::string fromString(const std::string &string) override;
 

@@ -44,6 +44,12 @@ public:
         *ostream << "Welcome to the Toliak's DB.\nEnter 'help' to get available commands." << std::endl;
     }
 
+    /**
+     * @brief Выводит текст, затем считывает строку, приводя ее к указанному типу
+     * @tparam T Приводимый тип
+     * @param output Вывод в поток, перед захватом строки
+     * @return Приводимый тип, переведенный из строки
+     */
     template<typename T>
     T pureInput(const std::string &output)
     {
@@ -53,7 +59,16 @@ public:
         return fromString<T>(input);
     }
 
+    /**
+     * @brief Считывает строки из консоли
+     * @return Введенная строка
+     */
     std::string getLine();
 
+    /**
+     * @brief Разделяет строку на команду и аргументы
+     * @param line Исходная строка
+     * @return Пара строк вида (команда, аргуметы)
+     */
     static std::pair<std::string, std::string> divideCommand(const std::string &line);
 };

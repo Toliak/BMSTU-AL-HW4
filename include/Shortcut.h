@@ -12,9 +12,13 @@ template<typename T>
 struct _fromString
 {
     T value;
+
     explicit _fromString(const std::string &string)
     {
+        // Создание потока
         std::stringstream ss;
+
+        // Записывание строки, затем считывание необходимого типа
         ss << string;
         ss >> value;
     }
@@ -27,44 +31,48 @@ struct _fromString<std::string>
     explicit _fromString(std::string string)
         : value(std::move(string))
     {
-
+        // Преобразование строки в строку не требует преобразований
     }
 };
+
 
 template<typename T>
 T fromString(const std::string &string)
 {
+    // Создает структуру (которая обрабатывает значение)
     return _fromString<T>(string).value;
 }
 
 template<int ...T>
 struct _Numbers
 {
-
+    // Структура, содержащая числа в шаблоне (для compile-time операций)
 };
 
 template<int N, typename T>
 struct _GenerateNumbers
 {
-
+    // Описание структуры, создающей последовательность чисел в compile-time
 };
 
 template<int N, int ...T>
 struct _GenerateNumbers<N, _Numbers<T...>>
 {
+    // Рекурсивное создание структуры
     using type = typename _GenerateNumbers<N - 1, _Numbers<N, T...>>::type;
 };
 
 template<int ...T>
 struct _GenerateNumbers<0, _Numbers<T...>>
 {
+    // При получении 0 возвращает переданную последовательность
     using type = _Numbers<T...>;
 };
 
 template<class ...T>
 struct _splitString
 {
-
+    // Описание структуры, используемой для разбиения строки
 };
 
 template<int ...B, class ...T>
@@ -110,26 +118,6 @@ std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string 
 
     return _splitString<typename _GenerateNumbers<templateSize, _Numbers<>>::type, T...>(resultIterator).value;
 }
-
-/*
-template <typename T>
-struct _vectorToString
-{
-    std::string toString(typename std::vector<T>::const_iterator &value) const
-    {
-        return value->toString();
-    }
-};
-
-template <typename T>
-struct _vectorToString<T*>
-{
-    std::string toString(typename std::vector<T*>::const_iterator &value) const
-    {
-        return (*value)->toString();
-    }
-};
-*/
 
 template<typename T, typename F>
 std::string vectorToString(const std::vector<T> &vector, F stringify)
