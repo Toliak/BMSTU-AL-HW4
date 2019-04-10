@@ -37,5 +37,7 @@ std::string HybridDatabase::toString() const
 
 HybridDatabase::~HybridDatabase()
 {
-
+    for (auto it : static_cast<std::vector<BaseSubdivisionModel *> &>(*this)) {
+        delete it;
+    }
 }
