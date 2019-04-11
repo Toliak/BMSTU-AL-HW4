@@ -2,19 +2,20 @@
 
 std::string Console::getLine()
 {
+    // Сборка префиксов
     for (const auto &it : prefixes) {
         *ostream << it << " ";
     }
     *ostream << "> ";
 
-    std::string command;
+    std::string command;                            ///< Введенная команда
     std::getline(*istream, command);
     return command;
 }
 
 std::pair<std::string, std::string> Console::divideCommand(const std::string &line)
 {
-    auto iterator = std::find(line.cbegin(), line.cend(), ' ');
+    auto iterator = std::find(line.cbegin(), line.cend(), ' ');         ///< Итератор, указывающий на первый пробел
     if (iterator == line.cend()) {
         return {line, ""};
     }
