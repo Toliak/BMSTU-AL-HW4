@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.4)
 project(BMSTU_HW_4)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -27,5 +27,11 @@ find_package(Threads)
 
 add_executable(BMSTU_HW_4 ${BMSTU_HW_4_SOURCE})
 
-target_link_libraries(BMSTU_HW_4 ${CMAKE_THREAD_LIBS_INIT} )
-target_link_libraries(BMSTU_HW_4 stdc++fs)
+target_link_libraries(BMSTU_HW_4 ${CMAKE_THREAD_LIBS_INIT})
+
+if(MSVC)
+
+else()
+    target_link_libraries(BMSTU_HW_4 stdc++fs)
+endif()
+

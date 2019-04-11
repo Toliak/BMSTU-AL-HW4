@@ -2,10 +2,11 @@
 
 std::string HybridDatabase::fromString(const std::string &string)
 {
-    std::string remain;
-    size_t elementAmount;
+    std::string remain;                                 ///< Отстаток строки
+    size_t elementAmount;                               ///< Количество объектов
     std::tie(BaseDatabase::name, elementAmount) = splitString<std::string, size_t>(string, '\n', &remain);
 
+    // Считывание каждой модели
     for (size_t i = 0; i < elementAmount; i++) {
         std::string modelType;
         std::tie(modelType) = splitString<std::string>(remain, '\n', &remain);
@@ -27,6 +28,7 @@ std::string HybridDatabase::fromString(const std::string &string)
 
 std::string HybridDatabase::toString() const
 {
+    // Каждая модель превращается в строку вида 'Название модели\nИнформация'
     return BaseDatabase::name + std::string("\n") + vectorToString(
         *this,
         [](const BaseSubdivisionModel *baseSubdivision) {

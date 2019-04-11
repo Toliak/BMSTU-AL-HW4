@@ -8,10 +8,13 @@
 #include "Model/EducationalSubdivisionModel.h"
 #include "Model/ScientificSubdivisionModel.h"
 
+/**
+ * @brief Абстрактный класс БД
+ */
 class BaseDatabase
 {
 protected:
-    std::string name;
+    std::string name;                       ///< Название БД
 
 public:
     explicit BaseDatabase(std::string name)
@@ -24,6 +27,9 @@ public:
     }
 
     BaseDatabase(BaseDatabase &&) = default;
+
+    // Копирование недопустимо
+
     BaseDatabase(const BaseDatabase &) = delete;
     BaseDatabase &operator=(const BaseDatabase &) = delete;
 
@@ -42,6 +48,9 @@ public:
     {}
 
     HybridDatabase(HybridDatabase &&) = default;
+
+    // Копирование недопустимо
+
     HybridDatabase(const HybridDatabase &) = delete;
     HybridDatabase &operator=(const HybridDatabase &) = delete;
 

@@ -20,5 +20,6 @@ script:
   - sudo ln -s /usr/bin/g++-8 /usr/local/bin/g++
   - mkdir -p cmake-build-debug
   - cd cmake-build-debug
+  - cmake --version
   - cmake ../
   - cmake --build .
