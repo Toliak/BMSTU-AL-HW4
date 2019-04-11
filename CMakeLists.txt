@@ -29,9 +29,14 @@ add_executable(BMSTU_HW_4 ${BMSTU_HW_4_SOURCE})
 
 target_link_libraries(BMSTU_HW_4 ${CMAKE_THREAD_LIBS_INIT})
 
-if(MSVC)
+find_library(
+        FS_LIBRARY
+        NAMES stdc++fs
+        HINTS /usr/lib/gcc/x86_64-linux-gnu/8/
+)
 
-else()
-    target_link_libraries(BMSTU_HW_4 stdc++fs)
-endif()
-
+if (FS_LIBRARY)
+    target_link_libraries(BMSTU_HW_4 ${FS_LIBRARY})
+else ()
+    message(WARNING "Filesystem library not found")
+endif ()

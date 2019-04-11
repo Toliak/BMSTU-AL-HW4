@@ -1,10 +1,12 @@
-# BMSTU Homework (C++ Database)
+# BMSTU Homework
 
 ## Information
 
-Hybrid file database
+Hybrid file *database*
 
 ## Compile and execute
+
+### CMake
 
 ```ShellSession
 $ cmake -H. -B cmake-build-debug
@@ -13,6 +15,13 @@ $ cmake --build cmake-build-debug
 
 ```ShellSession
 $ ./cmake-build-debug/BMSTU_HW_4
+```
+
+### Docker
+
+```ShellSession
+$ docker build . --tag bmstu_hw4
+$ docker run --rm -it bmstu_hw4
 ```
 
 ## Tests
