@@ -28,4 +28,7 @@ find_package(Threads)
 add_executable(BMSTU_HW_4 ${BMSTU_HW_4_SOURCE})
 
 target_link_libraries(BMSTU_HW_4 ${CMAKE_THREAD_LIBS_INIT} )
-target_link_libraries(BMSTU_HW_4 stdc++fs)
+
+find_library(FS_LIBRARY stdc++fs)
+
+target_link_libraries(BMSTU_HW_4 ${FS_LIBRARY})
