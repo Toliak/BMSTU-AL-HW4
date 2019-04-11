@@ -31,4 +31,9 @@ target_link_libraries(BMSTU_HW_4 ${CMAKE_THREAD_LIBS_INIT} )
 
 find_library(FS_LIBRARY stdc++fs)
 
-target_link_libraries(BMSTU_HW_4 ${FS_LIBRARY})
+if(FS_LIBRARY)
+    target_link_libraries(BMSTU_HW_4 ${FS_LIBRARY})
+else()
+    message(WARNING "Filesystem library not found")
+endif()
+

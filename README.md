@@ -21,8 +21,8 @@ Work in progress
 
 ## CI Status
 
-### Master [![Build Status](https://travis-ci.org/Toliak/BeautifulStream.svg?branch=master)](https://travis-ci.org/Toliak/BeautifulStream) [![Build status](https://ci.appveyor.com/api/projects/status/qsdb6q209v9tb7t3/branch/master?svg=true)](https://ci.appveyor.com/project/Toliak/bmstu-al-hw4/branch/master)
+### Master [![Build Status](https://travis-ci.com/Toliak/BMSTU-AL-HW4.svg?branch=master)](https://travis-ci.com/Toliak/BMSTU-AL-HW4) [![Build status](https://ci.appveyor.com/api/projects/status/qsdb6q209v9tb7t3/branch/master?svg=true)](https://ci.appveyor.com/project/Toliak/bmstu-al-hw4/branch/master)
 
-### Develop [![Build Status](https://travis-ci.org/Toliak/BeautifulStream.svg?branch=develop)](https://travis-ci.org/Toliak/BeautifulStream) [![Build status](https://ci.appveyor.com/api/projects/status/qsdb6q209v9tb7t3?svg=true)](https://ci.appveyor.com/project/Toliak/bmstu-al-hw4)
+### Develop [![Build Status](https://travis-ci.com/Toliak/BMSTU-AL-HW4.svg?branch=develop)](https://travis-ci.com/Toliak/BMSTU-AL-HW4) [![Build status](https://ci.appveyor.com/api/projects/status/qsdb6q209v9tb7t3?svg=true)](https://ci.appveyor.com/project/Toliak/bmstu-al-hw4)
 
 
