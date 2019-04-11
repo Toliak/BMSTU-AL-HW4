@@ -32,6 +32,6 @@ target_link_libraries(BMSTU_HW_4 ${CMAKE_THREAD_LIBS_INIT})
 if(MSVC)
 
 else()
-    target_link_libraries(BMSTU_HW_4 ${FS_LIBRARY})
+    target_link_libraries(BMSTU_HW_4 stdc++fs)
 endif()
 
