@@ -16,7 +16,7 @@ REGISTER_COMMAND(list)
 
         stream << "Unloaded: " << std::endl;
         for (const auto &it : std::filesystem::directory_iterator("db")) {
-            std::string stem = it.path().filename().stem();
+            std::string stem = it.path().filename().stem().string();
             if (data.find(stem) == data.cend()) {
                 stream << "\t" << stem << std::endl;
             }
