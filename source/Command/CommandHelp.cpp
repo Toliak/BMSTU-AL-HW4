@@ -18,7 +18,7 @@ REGISTER_COMMAND(help)
     stream << "\tleave - to leave database" << std::endl;
 
     stream << "Models commands:" << std::endl;
-    stream << "\tlist - get list of models in database" << std::endl;
+    stream << "\tlist (-A) - get list of models in database" << std::endl;
     stream << "\tcreate [entity type] - to create entity" << std::endl;
     stream << "\t\tS - scientific subdivision" << std::endl;
     stream << "\t\tE - educational subdivision" << std::endl;
