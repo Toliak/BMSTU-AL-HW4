@@ -60,7 +60,7 @@ REGISTER_COMMAND(create)
                 std::get<3>(baseInfo)
             );
 
-            auto projectAmount = console.pureInput<size_t>("ProjectModel amount: ");
+            auto projectAmount = console.pureInput<size_t>("Project amount: ");
             for (size_t i = 0; i < projectAmount; i++) {
                 ProjectModel project(
                     console.pureInput<std::string>("\tName: "),
@@ -78,13 +78,13 @@ REGISTER_COMMAND(create)
                 std::get<3>(baseInfo)
             );
 
-            auto coursesAmount = console.pureInput<size_t>("CourseModel amount: ");
+            auto coursesAmount = console.pureInput<size_t>("Course amount: ");
             for (size_t i = 0; i < coursesAmount; i++) {
                 using CourseMap = std::remove_reference<
                     decltype(std::declval<ScientificSubdivisionModel>().getCourses())
                 >::type;
 
-                auto courseKey = console.pureInput<CourseMap::key_type>("\tCourseModel: ");
+                auto courseKey = console.pureInput<CourseMap::key_type>("\tCourse: ");
                 CourseModel course(
                     console.pureInput<
                         decltype(std::declval<CourseModel>().getStudentAmount())

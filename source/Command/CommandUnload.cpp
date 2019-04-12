@@ -13,6 +13,7 @@ REGISTER_COMMAND(unload)
 
     data.erase(database.getName());
     Interaction::getInstance().setCurrentDatabase(nullptr);
+    Interaction::getInstance().getConsole().getPrefixes().clear();
 
     stream << "Database has been unloaded" << std::endl;
 }
