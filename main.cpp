@@ -30,6 +30,9 @@ int main()
                                  << "\t" << e.what() << std::endl;
         } catch (Exception &e) {
             console.getOstream() << e.what() << std::endl;
+        } catch (std::exception &e) {
+            console.getOstream() << "Bad behavior: " << std::endl;
+            console.getOstream() << "\t" << e.what() << std::endl;
         }
     }
 
