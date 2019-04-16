@@ -10,8 +10,6 @@ private:
     std::vector<ProjectModel> projects;
 
 public:
-
-
     EducationalSubdivisionModel(const std::string &name,
                            const std::string &director,
                            decltype(std::declval<BaseSubdivisionModel>().getGraduateAmount()) graduateAmount,

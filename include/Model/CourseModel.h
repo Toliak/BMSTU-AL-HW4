@@ -14,7 +14,7 @@ public:
 
     void setStudentAmount(decltype(CourseModel::studentAmount) amount)
     {
-        if (amount > 1000000) {
+        if (amount > 500) {
             throw CourseModelException("CourseModel: Students amount must be below 500");
         }
         CourseModel::studentAmount = amount;

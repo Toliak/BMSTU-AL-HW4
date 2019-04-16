@@ -62,6 +62,8 @@ REGISTER_COMMAND(apply)
                 stream << "\tID: " << index << std::endl;
             }
         }
+
+        //TODO: сохранять
     } else if (algorithmIndex == 5) {
         size_t maxEmployees;
         std::tie(maxEmployees) = splitString<size_t>(remain, ' ', &remain);
