@@ -13,7 +13,6 @@ file(GLOB BMSTU_HW_4_LIB_SOURCE_COMMAND "${CMAKE_CURRENT_SOURCE_DIR}/source/Comm
 file(GLOB BMSTU_HW_4_LIB_SOURCE_MODEL "${CMAKE_CURRENT_SOURCE_DIR}/source/Model/*.cpp")
 set(
         BMSTU_HW_4_LIB_SOURCE
-        ${BMSTU_HW_4_LIB_SOURCE_COMMAND}
         ${BMSTU_HW_4_LIB_SOURCE_MODEL}
         source/Console.cpp
         source/Interaction.cpp
@@ -40,7 +39,7 @@ endif ()
 
 # Main executable
 
-add_executable(BMSTU_HW_4 main.cpp)
+add_executable(BMSTU_HW_4 main.cpp ${BMSTU_HW_4_LIB_SOURCE_COMMAND})
 
 target_link_libraries(BMSTU_HW_4 BMSTU_HW_4_LIB)
 
