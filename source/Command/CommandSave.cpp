@@ -1,3 +1,4 @@
+#include <fstream>
 #include <filesystem>
 
 #include "Command.h"

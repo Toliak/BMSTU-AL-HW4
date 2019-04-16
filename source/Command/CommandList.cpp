@@ -2,6 +2,8 @@
 #include <filesystem>
 
 #include "Command.h"
+#include "Model/ScientificSubdivisionModel.h"
+#include "Model/EducationalSubdivisionModel.h"
 
 REGISTER_COMMAND(list)
 {

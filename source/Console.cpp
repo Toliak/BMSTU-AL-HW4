@@ -15,7 +15,7 @@ std::string Console::getLine()
 
 std::pair<std::string, std::string> Console::divideCommand(const std::string &line)
 {
-    auto iterator = std::find(line.cbegin(), line.cend(), ' ');         ///< Итератор, указывающий на первый пробел
+    const auto iterator = std::find(line.cbegin(), line.cend(), ' ');         ///< Итератор, указывающий на первый пробел
     if (iterator == line.cend()) {
         return {line, ""};
     }

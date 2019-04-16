@@ -1,4 +1,6 @@
 #include "Database.h"
+#include "Model/EducationalSubdivisionModel.h"
+#include "Model/ScientificSubdivisionModel.h"
 
 std::string HybridDatabase::fromString(const std::string &string)
 {

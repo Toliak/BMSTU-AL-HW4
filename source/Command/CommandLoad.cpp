@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "Command.h"
 
 REGISTER_COMMAND(load)

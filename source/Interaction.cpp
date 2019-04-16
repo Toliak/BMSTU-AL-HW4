@@ -15,7 +15,7 @@ void Interaction::executeCommand(const std::pair<std::string, std::string> &pair
 
 bool Interaction::registerCommand(const std::string &name, Command *command) noexcept
 {
-    auto result = commands.insert({name, command});     ///< Результат добавления
+    const auto result = commands.insert({name, command});     ///< Результат добавления
     return result.second;
 }
 

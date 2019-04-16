@@ -1,12 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <fstream>
 
-#include "Exception.h"
 #include "Model/BaseSubdivisionModel.h"
-#include "Model/EducationalSubdivisionModel.h"
-#include "Model/ScientificSubdivisionModel.h"
 
 /**
  * @brief Абстрактный класс БД
