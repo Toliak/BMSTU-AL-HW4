@@ -78,7 +78,7 @@ REGISTER_COMMAND(create)
                 std::get<3>(baseInfo)
             );
 
-            auto coursesAmount = console.pureInput<size_t>("Course amount: ");
+            const auto coursesAmount = console.pureInput<size_t>("Course amount: ");
             for (size_t i = 0; i < coursesAmount; i++) {
                 using CourseMap = std::remove_reference<
                     decltype(std::declval<ScientificSubdivisionModel>().getCourses())

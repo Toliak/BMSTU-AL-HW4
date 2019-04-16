@@ -3,6 +3,59 @@
 #include "Command.h"
 #include "Interaction.h"
 
+/**
+ * @brief Применение выборки
+ * @param db БД
+ * @param stream Поток вывода
+ * @param remain Остаток строки
+ * @param compare Функция сравнения
+*/
+void applySelect(
+    const std::string remain,
+    const std::function<bool(const BaseSubdivisionModel &)> &compare)
+{
+    std::ostream &stream = Interaction::getInstance().getConsole().getOstream();    ///< Поток вывода
+    HybridDatabase &db = *Interaction::getInstance().getCurrentDatabase();      ///< Текущая БД
+    std::vector<size_t> indexes;                ///< Правильные индексы
+   
+    // Прохождение по БД
+    for (auto it = db.cbegin(); it != db.cend(); it++) {
+        size_t index = it - db.cbegin();        ///< Индекс
+        if (compare(**it)) {
+            stream << "\tID: " << index << std::endl;
+            indexes.push_back(index);
+        }
+    }
+    
+    // Попытка создать новую БД
+    std::string dbName;                         ///< Название БД
+    try {
+        std::tie(dbName) = splitString<std::string>(remain);
+    } catch (SplitShortcutException &) {
+        // Значит не требуется создание новой БД
+    }
+
+    // Если есть название => необходимо создать БД с выборкой
+    if (!dbName.empty()) {
+        auto &databases = Interaction::getInstance().getData();
+        if (databases.find(dbName) != databases.cend()) {
+            stream << "Database with this name already exists" << std::endl;
+            return;
+        }
+
+        HybridDatabase createdDb(dbName);                   ///< БД с выборкой
+
+        for (auto index : indexes) {
+            createdDb.push_back(db[index]);
+        }
+        databases.insert({ dbName, std::move(createdDb) });
+
+        stream << "Selection saved to " << dbName << std::endl;
+        stream << "Database IS NOT saved to file" << std::endl;
+    }
+    
+}
+
 REGISTER_COMMAND(apply)
 {
     std::ostream &stream = Interaction::getInstance().getConsole().getOstream();    ///< Поток вывода
@@ -64,28 +117,24 @@ REGISTER_COMMAND(apply)
         size_t maxStudents;                     ///< Максимальное число стундентов
         std::tie(maxStudents) = splitString<size_t>(remain, ' ', &remain);      // Получение из остаточной строки
 
-        // Для каждого объекта модели проверка условия
-        for (auto it = db.cbegin(); it != db.cend(); it++) {
-            size_t index = it - db.cbegin();
-            BaseSubdivisionModel &model = **it;
-            if (model.getStudentsAmount() <= maxStudents) {
-                stream << "\tID: " << index << std::endl;
+        applySelect(
+            remain,
+            [maxStudents](const BaseSubdivisionModel &model)
+            {
+                return model.getStudentsAmount() <= maxStudents;
             }
-        }
-
-        //TODO: сохранять
+        );
     } else if (algorithmIndex == 5) {
         size_t maxEmployees;                                    ///< Максимальное число сотрудников
         std::tie(maxEmployees) = splitString<size_t>(remain, ' ', &remain);
 
-        // Проверка условия для каждого объекта модели
-        for (auto it = db.cbegin(); it != db.cend(); it++) {
-            size_t index = it - db.cbegin();
-            BaseSubdivisionModel &model = **it;
-            if (model.getEmployeeAmount() > maxEmployees) {
-                stream << "\tID: " << index << std::endl;
+        applySelect(
+            remain,
+            [maxEmployees](const BaseSubdivisionModel &model)
+            {
+                return model.getEmployeeAmount() > maxEmployees;
             }
-        }
+        );
     } else {
         stream << "Wrong algorithm ID" << std::endl;
         return;

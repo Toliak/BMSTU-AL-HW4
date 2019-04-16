@@ -166,11 +166,14 @@ std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string 
         }
     }
 
+    // При недостатке количества подстрок - добавление конечной
     if (separatorCounter < templateSize && !line.empty()) {
-        // При недостатке количества подстрок - добавление конечной
         substrings.emplace_back(line);
-    } else if (remain) {
-        // Если существует указатель на остаточную строку, то копирование в нее остатка
+        line.clear();                   // Очистка
+    }
+
+    // Если существует указатель на остаточную строку, то копирование в нее остатка
+    if (remain) {
         *remain = line;
     }
 
