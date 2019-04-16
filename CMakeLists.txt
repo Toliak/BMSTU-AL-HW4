@@ -33,7 +33,9 @@ find_library(
 if (FS_LIBRARY)
     target_link_libraries(BMSTU_HW_4_LIB ${FS_LIBRARY})
 else ()
-    message(WARNING "Filesystem library not found")
+	if (NOT MSVC)
+		message(WARNING "Filesystem library not found")
+	endif ()
 endif ()
 
 

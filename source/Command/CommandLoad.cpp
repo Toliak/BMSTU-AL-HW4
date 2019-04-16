@@ -10,7 +10,7 @@ REGISTER_COMMAND(load)
     inputFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     try {
         inputFile.open("db/" + dbName + ".txt");
-    } catch (std::ifstream::failure &e) {
+    } catch (std::ifstream::failure &) {
         stream << "Error opening file" << std::endl;
         return;
     }

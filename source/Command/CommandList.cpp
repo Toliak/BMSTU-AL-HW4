@@ -30,7 +30,7 @@ REGISTER_COMMAND(list)
 
         try {
             std::tie(flag) = splitString<std::string>(string, ' ');
-        } catch (Exception &e) {
+        } catch (Exception &) {
 
         }
 
