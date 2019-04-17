@@ -2,6 +2,8 @@
 #include <filesystem>
 
 #include "Command.h"
+#include "Model/ScientificSubdivisionModel.h"
+#include "Model/EducationalSubdivisionModel.h"
 
 REGISTER_COMMAND(list)
 {
@@ -30,7 +32,7 @@ REGISTER_COMMAND(list)
 
         try {
             std::tie(flag) = splitString<std::string>(string, ' ');
-        } catch (Exception &e) {
+        } catch (Exception &) {
 
         }
 

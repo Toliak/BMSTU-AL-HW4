@@ -28,6 +28,6 @@ REGISTER_COMMAND(help)
     stream << "\t\t 1 [Director] - to find subdivision by director" << std::endl;
     stream << "\t\t 2 - to sort subdivisions by name" << std::endl;
     stream << "\t\t 3 - to sort subdivisions by employees amount" << std::endl;
-    stream << "\t\t 4 [N] - to get subdivisions where student amount is less or equal N" << std::endl;
-    stream << "\t\t 5 [N] - to get subdivisions where employee amount is greater N" << std::endl;
+    stream << "\t\t 4 [N] (database name) - to get subdivisions where student amount is less or equal N" << std::endl;
+    stream << "\t\t 5 [N] (database name) - to get subdivisions where employee amount is greater N" << std::endl;
 }

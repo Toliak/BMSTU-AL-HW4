@@ -1,10 +1,7 @@
 #pragma once
 
-#include <unordered_map>
 #include <string>
-#include <utility>
 
-#include "Exception.h"
 #include "Shortcut.h"
 
 /**
