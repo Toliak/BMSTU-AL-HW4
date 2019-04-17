@@ -36,6 +36,9 @@ public:
     virtual ~BaseDatabase() = default;
 };
 
+/**
+ * @brief Гибридная БД
+ */
 class HybridDatabase: virtual public BaseDatabase, public std::vector<BaseSubdivisionModel *>
 {
 public:
