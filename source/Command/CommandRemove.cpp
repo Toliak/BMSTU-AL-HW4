@@ -17,6 +17,6 @@ REGISTER_COMMAND(remove)
         return;
     }
 
-    db->erase(db->cbegin() + index);
+    db->safeErase(db->cbegin() + index);
     stream << "Item removed" << std::endl;
 }
