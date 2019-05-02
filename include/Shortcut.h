@@ -200,7 +200,13 @@ std::tuple<T...> splitString(std::string line, char splitter = ' ', std::string 
 template<typename T, typename F>
 std::string vectorToString(const std::vector<T> &vector, F stringify)
 {
-    std::string result = std::to_string(vector.size()) + std::string("\n");    ///< Результат. Содержит размер вектора
+    std::string result = std::to_string(vector.size());    ///< Результат. Содержит размер вектора
+
+    // Не дописываем перенос строки, если вектор пустой
+    if (!vector.empty()) {
+        result += "\n";
+    }
+
     auto preEndIterator = vector.cend();                                       ///< Предпоследний итератор
     preEndIterator--;                   // Перемещение итератора на 1 назад
 

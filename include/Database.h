@@ -36,6 +36,9 @@ public:
     virtual ~BaseDatabase() = default;
 };
 
+/**
+ * @brief Гибридная БД
+ */
 class HybridDatabase: virtual public BaseDatabase, public std::vector<BaseSubdivisionModel *>
 {
 public:
@@ -51,6 +54,12 @@ public:
     HybridDatabase &operator=(const HybridDatabase &) = delete;
 
     ~HybridDatabase() override;
+
+    iterator safeErase(const_iterator position)
+    {
+        delete *position;
+        return std::vector<BaseSubdivisionModel *>::erase(position);
+    }
 
     std::string fromString(const std::string &string) override;
 

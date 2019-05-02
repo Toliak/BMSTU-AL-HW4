@@ -2,6 +2,8 @@
 
 #include "Command.h"
 #include "Interaction.h"
+#include "Model/EducationalSubdivisionModel.h"
+#include "Model/ScientificSubdivisionModel.h"
 
 /**
  * @brief Применение выборки
@@ -11,13 +13,13 @@
  * @param compare Функция сравнения
 */
 void applySelect(
-    const std::string remain,
+    const std::string &remain,
     const std::function<bool(const BaseSubdivisionModel &)> &compare)
 {
     std::ostream &stream = Interaction::getInstance().getConsole().getOstream();    ///< Поток вывода
     HybridDatabase &db = *Interaction::getInstance().getCurrentDatabase();      ///< Текущая БД
     std::vector<size_t> indexes;                ///< Правильные индексы
-   
+
     // Прохождение по БД
     for (auto it = db.cbegin(); it != db.cend(); it++) {
         size_t index = it - db.cbegin();        ///< Индекс
@@ -26,7 +28,7 @@ void applySelect(
             indexes.push_back(index);
         }
     }
-    
+
     // Попытка создать новую БД
     std::string dbName;                         ///< Название БД
     try {
@@ -46,14 +48,22 @@ void applySelect(
         HybridDatabase createdDb(dbName);                   ///< БД с выборкой
 
         for (auto index : indexes) {
-            createdDb.push_back(db[index]);
+            // Обязательно копирование (чтобы избежать проблем с деструктором)
+            BaseSubdivisionModel *base = db[index];                     ///< Базовый указатель
+            auto educational = dynamic_cast<EducationalSubdivisionModel *>(base);  ///< Попытка преобразования указателя
+            if (educational) {
+                createdDb.push_back(new EducationalSubdivisionModel(*educational));
+            } else {
+                auto scientific = dynamic_cast<ScientificSubdivisionModel *>(base);    ///< Преобразованный указатель
+                createdDb.push_back(new ScientificSubdivisionModel(*scientific));
+            }
         }
-        databases.insert({ dbName, std::move(createdDb) });
+        databases.insert({dbName, std::move(createdDb)});
 
         stream << "Selection saved to " << dbName << std::endl;
         stream << "Database IS NOT saved to file" << std::endl;
     }
-    
+
 }
 
 REGISTER_COMMAND(apply)
@@ -119,8 +129,7 @@ REGISTER_COMMAND(apply)
 
         applySelect(
             remain,
-            [maxStudents](const BaseSubdivisionModel &model)
-            {
+            [maxStudents](const BaseSubdivisionModel &model) {
                 return model.getStudentsAmount() <= maxStudents;
             }
         );
@@ -130,8 +139,7 @@ REGISTER_COMMAND(apply)
 
         applySelect(
             remain,
-            [maxEmployees](const BaseSubdivisionModel &model)
-            {
+            [maxEmployees](const BaseSubdivisionModel &model) {
                 return model.getEmployeeAmount() > maxEmployees;
             }
         );
