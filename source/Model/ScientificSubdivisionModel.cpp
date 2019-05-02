@@ -16,8 +16,13 @@ ScientificSubdivisionModel::getStudentsAmount() const noexcept
 
 std::string ScientificSubdivisionModel::toString() const
 {
-    std::string coursesString = std::to_string(ScientificSubdivisionModel::courses.size()) + std::string("\n");
+    std::string coursesString = std::to_string(ScientificSubdivisionModel::courses.size());
     ///< Строка, содержащая информацию о курсах
+
+    // Не дописываем перенос строки, если словарь пустой
+    if (!ScientificSubdivisionModel::courses.empty()) {
+        coursesString += "\n";
+    }
 
     // Запись информации о курсах в строку
     for (const auto &course : ScientificSubdivisionModel::courses) {
