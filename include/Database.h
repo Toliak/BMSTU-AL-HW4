@@ -55,6 +55,12 @@ public:
 
     ~HybridDatabase() override;
 
+    iterator safeErase(const_iterator position)
+    {
+        delete *position;
+        return std::vector<BaseSubdivisionModel *>::erase(position);
+    }
+
     std::string fromString(const std::string &string) override;
 
     std::string toString() const override;
